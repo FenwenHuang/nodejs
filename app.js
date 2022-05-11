@@ -10,15 +10,18 @@ const hello = require('./hello');
 
 ////////////////////////////////////////////////////////////////
 
-hello.sayHello();
+const server = http.createServer((req, res) => {
+	// console.log('第一個參數是瀏覽器對 web server 的 request', req);
+	// console.log('第二個參數是 web 要response 給瀏覽器的內容', res);
+    if (req.url === '/') {
+        return res.end('This is home page');
+    } 
+		if (req.url === '/login') {
+        return res.end('This is login page');
+    } 
+	res.end();
+});
 
-console.log(hello.title);
-
-// app.js
-const cowsay = require('cowsay');
-
-console.log(cowsay.say({
-    text : "I'm a moooodule",
-    e : "^^",
-    T : "U "
-}));
+server.listen(3000, () => {
+	console.log('running server on port 3000');
+});
