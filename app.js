@@ -14,9 +14,13 @@ const server = http.createServer((req, res) => {
 	// console.log('第一個參數是瀏覽器對 web server 的 request', req);
 	// console.log('第二個參數是 web 要response 給瀏覽器的內容', res);
     if (req.url === '/') {
-        return res.end('This is home page');
+        res.writeHead(200, { 'Content-Type': 'text/html' }); //MIME type 
+        //告訴browser要怎麼回傳
+	    return res.end('<h1>This is home page</h1>');
+     
     } 
 		if (req.url === '/login') {
+            res.stautsCode = 200;
         return res.end('This is login page');
     } 
 	res.end();
