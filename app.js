@@ -7,6 +7,7 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const { render } = require('express/lib/response');
 // 第三個區塊 自建模組
 // const hello = require('./hello');
 
@@ -41,7 +42,11 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
+
 //middleware 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -56,13 +61,13 @@ app.use((req,res,next)=> {
 
 
 app.get('/', (req, res) => {
-    res.status(200)
-        .sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.status(200).render('index');
+        // .sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-    res.status(200)
-        .sendFile(path.join(__dirname, 'views', 'login.html'));
+    res.status(200).render('login');
+        // .sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -74,8 +79,8 @@ app.post('/login', (req, res) => {
 });
 
 app.get('*',(req,res)=>{
-    res.status(404)
-    .sendFile(path.join(__dirname,'views','404.html'));
+    res.status(404).render('404');
+    // .sendFile(path.join(__dirname,'views','404.html'));
 });
 
 app.listen(3000, () => {
