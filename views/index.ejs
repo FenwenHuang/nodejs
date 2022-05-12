@@ -3,6 +3,7 @@
 <body>
     <h1><%= pageTitle %>  :)</h1>
     <!-- <img src="/images/Apple.jpeg" alt=""> -->
+<%- include('./includes/navbar')%>
     <% if (products.length > 0) { %>
         <% products.forEach((product) => { %>
             <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
@@ -12,5 +13,4 @@
         尚無商品
     <% } %>
     
-    </body>
-</html>
+    <%- include('./includes/footer') %>

@@ -63,6 +63,7 @@ app.use((req,res,next)=> {
 app.get('/', (req, res) => {
     res.status(200).render('index', {
         pageTitle: 'Book Your Books online',
+        path:'/',
         products:products
     });
 });
@@ -71,7 +72,8 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
     res.status(200).render('login',{
-            pageTitle: 'Login'
+            pageTitle: 'Login',
+            path:'login',
     });
         // .sendFile(path.join(__dirname, 'views', 'login.html'));
 });
