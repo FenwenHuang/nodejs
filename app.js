@@ -61,12 +61,17 @@ app.use((req,res,next)=> {
 
 
 app.get('/', (req, res) => {
-    res.status(200).render('index');
-        // .sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.status(200).render('index', {
+        pageTitle: 'Book Your Books online'
+    });
 });
+        // .sendFile(path.join(__dirname, 'views', 'index.html'));
+
 
 app.get('/login', (req, res) => {
-    res.status(200).render('login');
+    res.status(200).render('login',{
+            pageTitle: 'Login'
+    });
         // .sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 app.post('/login', (req, res) => {
@@ -79,7 +84,9 @@ app.post('/login', (req, res) => {
 });
 
 app.get('*',(req,res)=>{
-    res.status(404).render('404');
+    res.status(404).render('404', {
+        pageTitle: 'Page Not Found'
+    });
     // .sendFile(path.join(__dirname,'views','404.html'));
 });
 
