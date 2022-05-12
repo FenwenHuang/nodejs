@@ -53,6 +53,8 @@ app.use((req,res,next)=> {
     console.log('World!');
     next()
 });
+
+
 app.get('/', (req, res) => {
     res.status(200)
         .sendFile(path.join(__dirname, 'views', 'index.html'));
@@ -69,6 +71,11 @@ app.post('/login', (req, res) => {
     } else {
         console.log('欄位尚未填寫完成！')
     }
+});
+
+app.get('*',(req,res)=>{
+    res.status(404)
+    .sendFile(path.join(__dirname,'views','404.html'));
 });
 
 app.listen(3000, () => {
