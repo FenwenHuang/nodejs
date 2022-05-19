@@ -1,56 +1,18 @@
-
-// 第一個區塊 內建模組
-const path = require('path');
-// const http = require('http');
-
-// 第二個區塊 第三方模組(套件)
-
 const express = require('express');
-const bodyParser = require('body-parser');
-const { render } = require('express/lib/response');
-// 第三個區塊 自建模組
-const authRoutes = require('./routes/auth'); // 記得先引入模組
-const shopRoutes = require('./routes/shop'); 
-const errorRoutes = require('./routes/404');
-////////////////////////////////////////////////////////////////
 
 
-const app = express();
+const router = express.Router();
 
 
-
-//middleware 
-app.set('view engine', 'ejs');
-app.set('views', 'views');
-
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use((req,res,next)=> {
-    console.log('Hello!');
-    next()
-});
-app.use((req,res,next)=> {
-    console.log('World!');
-    next()
+router.get('/', (req, res) => {
+    res.status(200).render('index', {
+        pageTitle: 'Book Your Books online',
+        path:'/',
+        products
+    });
 });
 
-app.use(authRoutes);
-app.use(shopRoutes);
-app.use(errorRoutes);
-
-
-
-        // .sendFile(path.join(__dirname, 'views', 'index.html'));
-
-
-
-
-
-app.listen(3000, () => {
-	console.log('Web Server is running on port 3000');
-});
-
+module.exports=router;
 
 const products = [
     {
