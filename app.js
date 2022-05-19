@@ -8,10 +8,14 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { render } = require('express/lib/response');
+
+
 // 第三個區塊 自建模組
+const database = require('./utils/database');
 const authRoutes = require('./routes/auth'); // 記得先引入模組
 const shopRoutes = require('./routes/shop'); 
 const errorRoutes = require('./routes/404');
+const product=require('./models/product');
 ////////////////////////////////////////////////////////////////
 
 
@@ -26,14 +30,7 @@ app.set('views', 'views');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use((req,res,next)=> {
-    console.log('Hello!');
-    next()
-});
-app.use((req,res,next)=> {
-    console.log('World!');
-    next()
-});
+
 
 app.use(authRoutes);
 app.use(shopRoutes);
@@ -41,15 +38,17 @@ app.use(errorRoutes);
 
 
 
-        // .sendFile(path.join(__dirname, 'views', 'index.html'));
-
-
-
-
-
-app.listen(3000, () => {
-	console.log('Web Server is running on port 3000');
-});
+database
+	.sync()
+	.then((result) => {
+        product.bulkCreate(products);
+		app.listen(3000, () => {
+			console.log('Web Server is running on port 3000');
+		});
+	})
+	.catch((err) => {
+		console.log('create web server error: ', err);
+	});
 
 
 const products = [
@@ -72,4 +71,6 @@ const products = [
         imageUrl: 'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/062/76/0010627615.jpg&v=5315ab5f&w=348&h=348'
     },
 ];
+
+
 
