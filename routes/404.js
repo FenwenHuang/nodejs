@@ -2,15 +2,11 @@ const express = require('express');
 
  ////////////////////////////////////////////////////////////
 
+const authController=require('../controller/404');
+
  const router = express.Router();
 
- router.get('*', (req, res) => {
-     res.status(404)
-         .render('404', {
-             path: '*',
-             pageTitle: 'Page Not Found'
-         });
- });
+ router.get('*', authController.getError);
 
 
  module.exports = router; 
