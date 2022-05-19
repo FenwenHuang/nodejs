@@ -43,7 +43,7 @@ app.use(errorRoutes);
 database
     .sync()
 	.then((result) => {
-        user.create({ displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'})
+        user.create({ displayName: 'Admin', email: 'wen@skoob.com', password: '11111111'})
         product.bulkCreate(products);
 		app.listen(3000, () => {
 			console.log('Web Server is running on port 3000');
