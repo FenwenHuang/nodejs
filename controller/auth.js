@@ -1,5 +1,5 @@
 const getLogin=(req, res) => {
-    res.status(200).render('login',{
+    res.status(200).render('auth/login',{
             pageTitle: 'Login',
             path:'login',
     });

@@ -16,6 +16,8 @@ const authRoutes = require('./routes/auth'); // 記得先引入模組
 const shopRoutes = require('./routes/shop'); 
 const errorRoutes = require('./routes/404');
 const product=require('./models/product');
+const user=require('./models/user');
+
 ////////////////////////////////////////////////////////////////
 
 
@@ -39,8 +41,9 @@ app.use(errorRoutes);
 
 
 database
-	.sync()
+    .sync()
 	.then((result) => {
+        user.create({ displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'})
         product.bulkCreate(products);
 		app.listen(3000, () => {
 			console.log('Web Server is running on port 3000');
