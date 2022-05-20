@@ -3,7 +3,6 @@ const user = require('../models/user');
 const getLogin=(req, res) => {
     res.status(200).render('auth/login',{
             pageTitle: 'Login',
-            path:'login',
     });
 }
 
@@ -19,6 +18,7 @@ user.findOne({ where: { email }})
     }
     if (user.password === password) {
         console.log('login: 成功');
+        req.session.isLogin = true;
         return res.redirect('/')
     } 
     console.log('login: 找不到此 user 或密碼錯誤');
@@ -30,11 +30,12 @@ user.findOne({ where: { email }})
 });
 };
 
-const postLogout=(req, res) => {
-    // TODO: 實作 logout 機制
-    res.redirect('/login');
-}
-
+const postLogout = (req, res) => {
+    req.session.destroy((err) => {
+        console.log('session destroy() error: ', err);
+        res.redirect('/login');
+    });
+};
 
 
 module.exports={
