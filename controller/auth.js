@@ -8,6 +8,13 @@ const getLogin=(req, res) => {
     });
 }
 
+const getSignup=(req,res)=>{
+    res.status(200)
+    .render('auth/signup',{
+        pageTitle:'Signup'
+    })
+}
+
 
 const postLogin=(req, res) => {
     const { email, password } = req.body;
@@ -44,4 +51,5 @@ module.exports={
     getLogin,
     postLogin,
     postLogout,
+    getSignup
 }
