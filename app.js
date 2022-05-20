@@ -10,6 +10,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 
 
+
 // 第三個區塊 自建模組
 const database = require('./utils/database');
 const authRoutes = require('./routes/auth'); // 記得先引入模組
@@ -41,6 +42,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
+    res.locals.pageTitle = 'Book Your Books online';
     res.locals.path = req.url;
     res.locals.isLogin = req.session.isLogin || false;
     next();
