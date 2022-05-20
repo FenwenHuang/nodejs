@@ -1,4 +1,4 @@
-const user = require('../models/user');
+const User = require('../models/user');
 
 const getLogin=(req, res) => {
     const errorMessage = req.flash('errorMessage')[0];
@@ -9,9 +9,11 @@ const getLogin=(req, res) => {
 }
 
 const getSignup=(req,res)=>{
+    const errorMessage = req.flash('errorMessage')[0];
     res.status(200)
     .render('auth/signup',{
-        pageTitle:'Signup'
+        pageTitle:'Signup',
+        errorMessage
     })
 }
 
@@ -19,7 +21,7 @@ const getSignup=(req,res)=>{
 const postLogin=(req, res) => {
     const { email, password } = req.body;
 
-user.findOne({ where: { email }})
+    User.findOne({ where: { email }})
 .then((user) => {
     if (!user) {
        req.flash('errorMessage', '錯誤的 Email 或 Password。');
@@ -39,6 +41,26 @@ user.findOne({ where: { email }})
 });
 };
 
+const postSignup = (req, res) => {
+    const { displayName, email, password } = req.body;
+    User.findOne({ where: { email } })
+        .then((user) => {
+            console.log('find user: ', user);
+            if (user) {
+                req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
+                return res.redirect('/signup');
+            } else {
+                return User.create({ displayName, email, password });
+            }
+        })
+        .then((result) => {
+            res.redirect('/login');
+        })
+        .catch((err) => {
+            console.log('signup_error', err);
+        });
+}
+
 const postLogout = (req, res) => {
     req.session.destroy((err) => {
         console.log('session destroy() error: ', err);
@@ -51,5 +73,6 @@ module.exports={
     getLogin,
     postLogin,
     postLogout,
-    getSignup
+    getSignup,
+    postSignup,
 }

@@ -36,7 +36,7 @@ app.use(session({
 	resave: false,   // 沒變更內容是否強制回存
 	saveUninitialized: false ,  // 新 session 未變更內容是否儲存
 	cookie: {
-		maxAge: 10000 // session 狀態儲存多久？單位為毫秒
+		maxAge: 1000000 // session 狀態儲存多久？單位為毫秒
 	}
 })); 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -58,7 +58,7 @@ app.use(errorRoutes);
 database
     .sync()
 	.then((result) => {
-        user.create({ displayName: 'Admin', email: 'wen@test.com', password: '11111111'})
+        // user.create({ displayName: 'Admin', email: '12@test.com', password: '11111111'})
         product.bulkCreate(products);
 		app.listen(3000, () => {
 			console.log('Web Server is running on port 3000');
