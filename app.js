@@ -8,7 +8,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-
+const connectFlash = require('connect-flash');
 
 
 // 第三個區塊 自建模組
@@ -48,7 +48,7 @@ app.use((req, res, next) => {
     next();
 });
 
-
+app.use(connectFlash());
 app.use(authRoutes);
 app.use(shopRoutes);
 app.use(errorRoutes);
@@ -58,7 +58,7 @@ app.use(errorRoutes);
 database
     .sync()
 	.then((result) => {
-        user.create({ displayName: 'Admin', email: 'ray@test.com', password: '11111111'})
+        user.create({ displayName: 'Admin', email: 'wen@test.com', password: '11111111'})
         product.bulkCreate(products);
 		app.listen(3000, () => {
 			console.log('Web Server is running on port 3000');
