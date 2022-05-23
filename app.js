@@ -9,6 +9,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const connectFlash = require('connect-flash');
+const csrfProtection = require('csurf');
 
 
 // 第三個區塊 自建模組
@@ -30,6 +31,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ 
 	secret: 'sessionToken',  // 加密用的字串
@@ -39,19 +42,27 @@ app.use(session({
 		maxAge: 1000000 // session 狀態儲存多久？單位為毫秒
 	}
 })); 
+
+app.use(connectFlash());
+app.use(csrfProtection());
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
     res.locals.pageTitle = 'Book Your Books online';
     res.locals.path = req.url;
     res.locals.isLogin = req.session.isLogin || false;
+    res.locals.csrfToken = req.csrfToken();
     next();
 });
 
-app.use(connectFlash());
+
 app.use(authRoutes);
 app.use(shopRoutes);
 app.use(errorRoutes);
+
+
+
 
 
 
