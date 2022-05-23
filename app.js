@@ -17,13 +17,16 @@ const database = require('./utils/database');
 const authRoutes = require('./routes/auth'); // 記得先引入模組
 const shopRoutes = require('./routes/shop'); 
 const errorRoutes = require('./routes/404');
-const product=require('./models/product');
-const user=require('./models/user');
+const Product=require('./models/product');
+const User = require('./models/user');
+ const Cart = require('./models/cart');
+ const CartItem = require('./models/cart-item');
 
 ////////////////////////////////////////////////////////////////
 
 
 const app = express();
+const oneDay = 1000 * 60 * 60 * 24;
 
 
 
@@ -31,22 +34,23 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ 
-	secret: 'sessionToken',  // 加密用的字串
+    secret: 'sessionToken',  // 加密用的字串
 	resave: false,   // 沒變更內容是否強制回存
 	saveUninitialized: false ,  // 新 session 未變更內容是否儲存
 	cookie: {
-		maxAge: 1000000 // session 狀態儲存多久？單位為毫秒
+		maxAge: oneDay // session 狀態儲存多久？單位為毫秒
 	}
 })); 
 
 app.use(connectFlash());
 app.use(csrfProtection());
 
-app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.use((req, res, next) => {
     res.locals.pageTitle = 'Book Your Books online';
@@ -55,6 +59,11 @@ app.use((req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
     next();
 });
+
+User.hasOne(Cart);
+ Cart.belongsTo(User);
+ Cart.belongsToMany(Product, { through: CartItem });
+ Product.belongsToMany(Cart, { through: CartItem });
 
 
 app.use(authRoutes);
@@ -70,7 +79,7 @@ database
     .sync()
 	.then((result) => {
         // user.create({ displayName: 'Admin', email: '12@test.com', password: '11111111'})
-        product.bulkCreate(products);
+        Product.bulkCreate(products);
 		app.listen(3000, () => {
 			console.log('Web Server is running on port 3000');
 		});
